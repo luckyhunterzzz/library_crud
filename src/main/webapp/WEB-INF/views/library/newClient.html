@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New Library client</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/library/clients}" th:object="${libraryClient}">
+  <label for="fullName">Введите Фамилию, имя, отчество:</label>
+  <input type="text" th:field="*{fullName}" id="fullName"/>
+  <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"> Name error </div>
+  <br/>
+  <label for="birthYear">Введите год рождения:</label>
+  <input type="text" th:field="*{birthYear}" id="birthYear"/>
+  <div style="color:red" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}"> Name error </div>
+  <br/>
+  <input type="submit" value="Создать!"/>
+</form>
+<br/>
+<br/>
+<a href="/Spring_Alishev_2_war/">На главную</a>
+<br/>
+<br/>
+</body>
+</html>

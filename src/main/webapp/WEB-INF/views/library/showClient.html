@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Клиент библиотеки</title>
+</head>
+<body>
+<div style="color:blueviolet" ><h3>Фамилия, Имя, Отчество:</h3></div>
+<p th:text="${libraryClient.getFullName()}">VALUE</p>
+<div style="color:blueviolet"><h3>Год рождения:</h3></div>
+<p th:text="${libraryClient.getBirthYear()}">VALUE</p>
+<div style="color:blueviolet"><h3>Уникальный номер клиента:</h3></div>
+<p th:text="${libraryClient.getId()}">VALUE</p>
+
+<div th:if="${#lists.isEmpty(libraryClient.getBookList())}">
+    <p>У клиента нет книг.</p>
+</div>
+
+<div th:unless="${#lists.isEmpty(libraryClient.getBookList())}">
+    <h3>Список книг у клиента:</h3>
+    <ul>
+        <li th:each="book : ${libraryClient.getBookList()}"
+            th:text="${book}">
+        </li>
+    </ul>
+</div>
+
+<a th:href="@{/library/clients/{id}/edit(id = ${libraryClient.getId()})}">Изменить клиента</a>
+<br/>
+<br/>
+<form th:method="DELETE" th:action="@{/library/clients/{id}(id=${libraryClient.getId()})}">
+    <input type="submit" value="Удалить клиента!"/>
+</form>
+<br/>
+<br/>
+<a href="/Spring_Alishev_2_war/">На главную</a>
+<br/>
+<br/>
+</body>
+</html>

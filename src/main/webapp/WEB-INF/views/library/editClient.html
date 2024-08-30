@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Изменение данных клиента</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/library/clients/{id}(id = ${libraryClient.getId()})}" th:object="${libraryClient}">
+  <label for="fullName">Введите Фамилию, имя, отчество:</label>
+  <input type="text" th:field="*{fullName}" id="fullName"/>
+  <!--  <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name error </div>-->
+  <br/>
+  <label for="birthYear">Введите год рождения:</label>
+  <input type="text" th:field="*{birthYear}" id="birthYear"/>
+  <!--  <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> Age error </div>-->
+  <br/>
+  <input type="submit" value="Изменить!"/>
+</form>
+<br/>
+<br/>
+<a href="/Spring_Alishev_2_war/">На главную</a>
+<br/>
+<br/>
+</body>
+</html>

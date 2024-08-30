@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Книга библиотеки</title>
+</head>
+<body>
+<div style="color:blueviolet"><h3>Название книги:</h3></div>
+<p th:text="${libraryBook.getName()}">VALUE</p>
+<div style="color:blueviolet"><h3>Автор книги:</h3></div>
+<p th:text="${libraryBook.getAuthor()}">VALUE</p>
+<div style="color:blueviolet"><h3>Год издания книги:</h3></div>
+<p th:text="${libraryBook.getYear()}">VALUE</p>
+<div style="color:blueviolet"><h3>Уникальный номер книги:</h3></div>
+<p th:text="${libraryBook.getId()}">VALUE</p>
+
+<div th:if="${libraryBook.getLibraryClientId() != 7}">
+    <div style="color:blueviolet"><h3>Клиент, взявший книгу: </h3></div>
+    <p th:text="${libraryBook.getClientName()}">VALUE</p>
+    <br/>
+    <br/>
+    <form th:method="PATCH" th:action="@{/library/books/{id}/free(id = ${libraryBook.getId()})}">
+        <input type="submit" value="Освободить книгу!"/>
+    </form>
+    <br/>
+</div>
+
+<div th:unless="${libraryBook.getLibraryClientId() != 7}">
+    <p style="color:green"><h3>Книга свободна</h3></p>
+
+    <form th:method="POST" th:action="@{/library/books/addClient}">
+        <input type="hidden" th:name="bookId" th:value="${libraryBook.getId()}"/>
+        <label for="client">Выберите читателя:</label>
+        <select name="clientId" id="client">
+            <option
+                    th:each="client : ${libraryClients}"
+                    th:if="${client.getId() != 7}"
+                    th:value="${client.getId()}"
+                    th:text="${client.getFullName()}">
+            </option>
+        </select>
+        <input type="submit" value="Добавить!"/>
+    </form>
+
+</div>
+
+<a th:href="@{/library/books/{id}/edit(id = ${libraryBook.getId()})}">Изменить книгу</a>
+<br/>
+<br/>
+<form th:method="DELETE" th:action="@{/library/books/{id}(id=${libraryBook.getId()})}">
+    <input type="submit" value="Удалить книгу!"/>
+</form>
+<br/>
+<br/>
+<a href="/Spring_Alishev_2_war/">На главную</a>
+<br/>
+<br/>
+</body>
+</html>

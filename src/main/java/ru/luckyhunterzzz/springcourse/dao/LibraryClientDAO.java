@@ -23,35 +23,29 @@ public class LibraryClientDAO {
     }
 
     public List<LibraryClient> index() {
-        return jdbcTemplate.query("SELECT * FROM project1.library_client",
+        return jdbcTemplate.query(SELECT_ALL_FROM_CLIENT,
                 new BeanPropertyRowMapper<>(LibraryClient.class));
     }
 
     public LibraryClient show(int id) {
-        List<LibraryBook> books = jdbcTemplate.query("SELECT * FROM project1.library_book " +
-                        "JOIN project1.library_client " +
-                        "ON project1.library_book.library_client_id = project1.library_client.id " +
-                        "WHERE project1.library_book.library_client_id = ?",
+        List<LibraryBook> books = jdbcTemplate.query(SELECT_BOOK_WITH_JOIN_BOOK_CLIENT_BY_ID,
                 new BeanPropertyRowMapper<>(LibraryBook.class),
                 id);
-        LibraryClient libraryClient = jdbcTemplate.query("SELECT * FROM project1.library_client WHERE id = ?",
+
+        LibraryClient libraryClient = jdbcTemplate.query(SELECT_CLIENT_BY_ID,
                         new BeanPropertyRowMapper<>(LibraryClient.class),
                         id)
                 .stream()
                 .findFirst()
                 .orElse(null);
 
-        if (books.isEmpty()) {
-            libraryClient.setBookList(null);
-            return libraryClient;
-        } else {
-            libraryClient.setBookList(books);
-            return libraryClient;
-        }
+        libraryClient.setBookList(books);
+
+        return libraryClient;
     }
 
     public Optional<LibraryClient> show(String fullName) {
-        return jdbcTemplate.query("SELECT * FROM project1.library_client WHERE full_name = ?",
+        return jdbcTemplate.query(SELECT_CLIENT_BY_FULLNAME,
                 new BeanPropertyRowMapper<>(LibraryClient.class),
                 fullName)
                 .stream()
@@ -59,7 +53,7 @@ public class LibraryClientDAO {
     }
 
     public void save(LibraryClient libraryClient) {
-        jdbcTemplate.update("INSERT INTO project1.library_client(full_name, birth_year) VALUES(?, ?)",
+        jdbcTemplate.update(INSERT_INTO_NEW_CLIENT,
                 libraryClient.getFullName(),
                 libraryClient.getBirthYear()
         );
@@ -67,7 +61,7 @@ public class LibraryClientDAO {
 
     public void update(int id, LibraryClient updatedLibraryClient) {
         jdbcTemplate.update(
-                "UPDATE project1.library_client SET full_name = ?, birth_year = ? WHERE id = ?",
+                UPDATE_CLIENT,
                 updatedLibraryClient.getFullName(),
                 updatedLibraryClient.getBirthYear(),
                 id
@@ -75,15 +69,12 @@ public class LibraryClientDAO {
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM project1.library_client WHERE id = ?", id);
+        jdbcTemplate.update(DELETE_CLIENT_BY_ID, id);
     }
 
     public List<LibraryBook> setBook(int id) {
         return jdbcTemplate.query(
-                "SELECT * FROM project1.library_book " +
-                        "JOIN project1.library_client " +
-                        "ON project1.library_book.library_client_id = project1.library_client.id " +
-                        "WHERE project1.library_book.library_client_id = ?",
+                SELECT_BOOK_WITH_JOIN_BOOK_CLIENT_BY_ID,
                 new BeanPropertyRowMapper<>(LibraryBook.class),
                 id
         );

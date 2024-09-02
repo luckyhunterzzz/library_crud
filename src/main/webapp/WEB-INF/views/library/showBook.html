@@ -14,9 +14,9 @@
 <div style="color:blueviolet"><h3>Уникальный номер книги:</h3></div>
 <p th:text="${libraryBook.getId()}">VALUE</p>
 
-<div th:if="${libraryBook.getLibraryClientId() != 7}">
+<div th:if="${libraryClient}">
     <div style="color:blueviolet"><h3>Клиент, взявший книгу: </h3></div>
-    <p th:text="${libraryBook.getClientName()}">VALUE</p>
+    <p th:text="${libraryClient.getFullName()}">VALUE</p>
     <br/>
     <br/>
     <form th:method="PATCH" th:action="@{/library/books/{id}/free(id = ${libraryBook.getId()})}">
@@ -25,8 +25,8 @@
     <br/>
 </div>
 
-<div th:unless="${libraryBook.getLibraryClientId() != 7}">
-    <p style="color:green"><h3>Книга свободна</h3></p>
+<div th:if="${libraryClients}">
+    <h3><p style="color:green">Книга свободна</p></h3>
 
     <form th:method="POST" th:action="@{/library/books/addClient}">
         <input type="hidden" th:name="bookId" th:value="${libraryBook.getId()}"/>
@@ -34,7 +34,6 @@
         <select name="clientId" id="client">
             <option
                     th:each="client : ${libraryClients}"
-                    th:if="${client.getId() != 7}"
                     th:value="${client.getId()}"
                     th:text="${client.getFullName()}">
             </option>

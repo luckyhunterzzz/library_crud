@@ -8,12 +8,13 @@ public class LibraryBook {
     @NotEmpty(message = "Не может быть пустым")
     private String name;
     private String author;
+    @NotEmpty(message = "Не может быть пустым")
     @Max(value = 2024, message = "Год должен быть <= 2024")
     private int year;
 
-    private int libraryClientId;
-
-    private String clientName;
+//    private int libraryClientId;
+//
+//    private String clientName;
 
     public LibraryBook(String name, String author, int year) {
         this.name = name;
@@ -61,19 +62,19 @@ public class LibraryBook {
         return name + " by " + author + " (" + year + ")";
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public int getLibraryClientId() {
-        return libraryClientId;
-    }
-
-    public void setLibraryClientId(int libraryClientId) {
-        this.libraryClientId = libraryClientId;
-    }
+//    public String getClientName() {
+//        return clientName;
+//    }
+//
+//    public void setClientName(String clientName) {
+//        this.clientName = clientName;
+//    }
+//
+//    public int getLibraryClientId() {
+//        return libraryClientId;
+//    }
+//
+//    public void setLibraryClientId(int libraryClientId) {
+//        this.libraryClientId = libraryClientId;
+//    }
 }

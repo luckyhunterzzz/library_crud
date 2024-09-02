@@ -7,11 +7,9 @@
 <body>
 
 <div th:each="client : ${libraryClients}">
-    <div th:if="${client.getId() != 7}">
-        <a th:href="@{/library/clients/{id}(id=${client.getId()})}"
-           th:text="${client.getFullName()} + ', ' + ${client.getBirthYear()}"
-        >user </a>
-    </div>
+    <a th:href="@{/library/clients/{id}(id=${client.getId()})}"
+       th:text="${client.getFullName()} + ', ' + ${client.getBirthYear()}"
+    >user </a>
 </div>
 <br/>
 <hr/>

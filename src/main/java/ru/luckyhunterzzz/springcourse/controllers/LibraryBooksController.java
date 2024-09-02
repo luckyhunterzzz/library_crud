@@ -2,7 +2,6 @@ package ru.luckyhunterzzz.springcourse.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,19 +11,20 @@ import ru.luckyhunterzzz.springcourse.dao.LibraryClientDAO;
 import ru.luckyhunterzzz.springcourse.models.LibraryBook;
 import ru.luckyhunterzzz.springcourse.models.LibraryClient;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @Controller
 @RequestMapping("/library/books")
 public class LibraryBooksController {
     private final LibraryBookDAO libraryBookDAO;
-    @Autowired
-    private LibraryClientDAO libraryClientDAO;
+
+    private final LibraryClientDAO libraryClientDAO;
 
     @Autowired
-    public LibraryBooksController(LibraryBookDAO libraryBookDAO) {
+    public LibraryBooksController(LibraryBookDAO libraryBookDAO, LibraryClientDAO libraryClientDAO) {
         this.libraryBookDAO = libraryBookDAO;
+        this.libraryClientDAO = libraryClientDAO;
     }
 
     @GetMapping
@@ -35,8 +35,16 @@ public class LibraryBooksController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("libraryBook", libraryBookDAO.show(id));
-        model.addAttribute("libraryClients", libraryClientDAO.index());
+        model.addAttribute("libraryBook", libraryBookDAO.show(id).get());
+
+        Optional<LibraryClient> libraryClient = libraryBookDAO.getLibraryClient(id);
+
+        if (libraryClient.isPresent()) {
+            model.addAttribute("libraryClient", libraryClient.get());
+        } else {
+            model.addAttribute("libraryClients", libraryClientDAO.index());
+        }
+
         return "library/showBook";
     }
 
@@ -65,7 +73,7 @@ public class LibraryBooksController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("libraryBook", libraryBookDAO.show(id));
+        model.addAttribute("libraryBook", libraryBookDAO.show(id).get());
         return "library/editBook";
     }
 
